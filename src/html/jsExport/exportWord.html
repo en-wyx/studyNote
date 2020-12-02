@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>生成word文档</title>
+</head>
+<body lang=ZH-CN style='tab-interval:21.0pt'>
+<div class="word">
+    <p align="center" style="font-size:20pt;font-weight:bold;">JS导出Word文档</p>
+    <img src="../../assets/微信图片_20201110122653.png"/>
+</div>
+<input type="button" value="导出word">
+<script src="../../utils/jquery-3.5.1/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="../../utils/export/FileSaver.js"></script>
+<script type="text/javascript" src="../../utils/export/jquery.wordexport.js"></script>
+<script>
+    $(function(){
+        $("input[type='button']").click(function(event) {
+            $(".word").wordExport('生成word文档');
+        });
+    })
+</script>
+</body>
+</html>

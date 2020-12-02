@@ -1,0 +1,21 @@
+前端Excel导出：
+    方法一：
+        将html转化成base-64 编码的字符串。进行下载导出
+        示例：html/jsExport/exportExcel.html
+              html/jsExport/exportExcel2.html
+    方法二：
+        引用'xlsx'和'file-saver'依赖，创建一个新的工作簿对象，将json对象转化成工作表，
+    将工作表（sheet）添加到工作簿（workbook）里，XLSX.write(workbook,opts)写入文件，
+    利用file-saver保存文件
+      示例：ReactHookTest/ExportExcel.js，utils/export/toExcel.js
+
+      
+前端Word导出：
+    方法一：
+        使用前端插件jquery.wondexport.js去实现
+        jquery.wondexport.js代码的主要思路是先创建一个标准html文档的json对象（static），
+    然后获取你要导出元素的html标签（包含所有子标签），读取要导出元素的中的图片，将其转化为画布的形式
+    方便写入doc【文本则直接被写入】，页面的样式定义为变量styles，你可以直接将css中的代码赋值给style
+    【不能在mhtml对象中以link的形式引入外联css，本人已尝试】，最后使用开源FileSaver.js写入doc。
+        示例：html/jsExport/exportWord.html，jquery-3.5.1.min.js，FileSaver.js，jquery.wordexport.js
+        注：oc中的图是通过链接的形式去访问这些图的，当你把这些图删掉后，doc文档在用Conten-Loaction请求服务器访问这些图片时，就找不到了

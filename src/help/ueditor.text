@@ -1,0 +1,13 @@
+富文本框----ueditor：
+    下载ueditor,下载地址：https://github.com/fex-team/ueditor
+    版本：ueditor-dev-1.5.0(非本项目下载的)
+    下载的文件放在index.html同级
+    配置：(注：此处顺序不能反)
+      <script type="text/javascript" src="/public/ueditor/ueditor.config.js"></script>
+      <!-- 编辑器源码文件 -->
+      <script type="text/javascript" src="/public/ueditor/_examples/editor_api.js"></script>
+      <script type="text/javascript" src="/public/ueditor/lang/zh-cn/zh-cn.js"></script>
+      这边编译器源码文件与官网文档不同，官方文档的ueditor.all.js文件在下载包中不存在，此处用的是_examples文件夹
+    下的editor_api.js文件，并需要修改baseURL的地址值，已保证能正确引入javascript文件
+    封装的UEditor组件：components/ueditor.js
+    本项目下的示例: public,components/ueditor.js,ReactHookTest/Ueditor.js

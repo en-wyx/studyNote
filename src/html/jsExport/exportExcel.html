@@ -1,0 +1,86 @@
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <p style="font-size: 20px;color: red;">使用table标签方式将json导出xls文件</p>
+  <button onclick="tableToExcel()">导出</button>
+</head>
+
+<body>
+  <script>
+    const tableToExcel = () => {
+      // 要导出的json数据
+      const jsonData = [
+        {
+          name: '路人甲',
+          phone: '123456',
+          email: '123@123456.com'
+        },
+        {
+          name: '炮灰乙',
+          phone: '123456',
+          email: '123@123456.com'
+        },
+        {
+          name: '土匪丙',
+          phone: '123456',
+          email: '123@123456.com'
+        },
+        {
+          name: '流氓丁',
+          phone: '123456',
+          email: '123@123456.com'
+        },
+      ]
+      // 列标题
+      let str = '<tr><td>姓名</td><td>电话</td><td>邮箱</td></tr>';
+      // 循环遍历，每行加入tr标签，每个单元格加td标签
+      for (let i = 0; i < jsonData.length; i++) {
+        str += '<tr>';
+        for (const key in jsonData[i]) {
+          // 增加\t为了不让表格显示科学计数法或者其他格式
+          str += `<td>${jsonData[i][key] + '\t'}</td>`;
+        }
+        str += '</tr>';
+      }
+      // Worksheet名
+      const worksheet = 'Sheet1'
+      const uri = 'data:application/vnd.ms-excel;base64,';
+
+      // 下载的表格模板数据 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">防止表格中文乱码
+      const template = `<html xmlns:o="urn:schemas-microsoft-com:office:office" 
+          xmlns:x="urn:schemas-microsoft-com:office:excel" 
+          xmlns="http://www.w3.org/TR/REC-html40">
+          <head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>
+          <x:Name>${worksheet}</x:Name>
+          <x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet>
+          </x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->
+          <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+          </head><body><table>${str}</table></body></html>`;
+      // 下载文件
+      // window.location.href = uri + base64(template);
+      // 自定义下载文件名
+      const link = document.createElement('a');
+      link.href = uri + base64(template)
+      link.download = '自定义名字.xls'; // 后缀为xlsx时文件打不开
+      link.click()
+    };
+    /**
+     * encodeURIComponent:
+     *    函数可把字符串作为URI组件进行编码。
+     *    该方法不会对ASCII字母和数字进行编码，也不会对这些ASCII标点符号进行编码(- _ . ! ~ * ' ( ) )
+     *    其他字符（比如 ：;/?:@&=+$,# 这些用于分隔 URI 组件的标点符号），都是由一个或多个十六进制的转义序列替换的。
+     * unescape:
+     *    unescape() 函数可对通过 escape() 编码的字符串进行解码。
+     *    提示： 使用函数escape() 对字符串进行编码。
+     * Window btoa() 方法 
+     *    方法用于创建一个 base-64 编码的字符串。
+     *    该方法使用 "A-Z", "a-z", "0-9", "+", "/" 和 "=" 字符来编码字符串。
+     *    base-64 解码使用方法是 atob() 。
+     */
+    // 输出base64编码
+    const base64 = s => window.btoa(unescape(encodeURIComponent(s)));
+  </script>
+</body>
+
+</html>
