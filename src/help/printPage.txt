@@ -1,0 +1,43 @@
+页面调用打印机打印
+  全局打印：
+    window.print()
+  局部打印：
+    通过构建一个隐藏的元素，该元素包裹需要打印的内容，当打印行为触发时，
+  将页面其他的一些不需要打印的元素异常，然后将需打印的元素追加到body中，
+  打印完成后，再恢复初始状态。本质还是将web页面中的元素打印出来
+    方法：
+      1、构建待打印元素
+        在页面中构建一个display为none的元素，里面的内容为你需要打印的内容，
+      我们还需要设置包裹打印内容的元素的ref属性，以便于后面获取到元素
+        <div style={{ display: 'none' }}>
+          <div ref={el => (this.printRef = el)}>
+          { 打印内容 }
+          </div>
+        </div>
+      2、打印动作触发时的处理
+        let printView = this.state.printRef  //获取待打印元素
+        document.querySelector('#root').className = 'print-hide'  //将根元素隐藏
+        document.body.appendChild(printView) //将待打印元素追加到body中
+        window.print() //调用浏览器的打印预览
+        document.body.removeChild(printView) //将待打印元素从body中移除
+        document.querySelector('#root').className = '' //将原始页面恢复
+      3、对应的CSS设置
+        @page {
+          size: A4;
+          margin: 0;
+        }
+        @media print {
+          html, body {
+              min-width: 0;
+              width: 210mm; 
+              height: 297mm;
+          }
+          .print-hide {
+            visibility: hidden!important;
+            display: none!important;
+          }
+        }
+        注：@page中的size可以自己设置纸张的大小，如果是A4纸可以直接设置值为A4,
+      媒体查询@media print中设置的是打印时的样式。因为打印设备知道其输出区域的
+      物理大小，所以使用cm、mm、in(英寸)等作为打印设计的单位完全可行
+    示例：ReactHookTest/PrintPage.js，ReactHookTest/PrintPage.css

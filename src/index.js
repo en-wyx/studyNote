@@ -6,8 +6,9 @@ import RichTextEditor from './ReactHookTest/RichTextEditor'
 import Ueditor from './ReactHookTest/Ueditor'
 import ExportExcel from './ReactHookTest/ExportExcel'
 import ExportWord from './ReactHookTest/ExportWord'
+import PrintPage from './ReactHookTest/PrintPage'
 
 ReactDOM.render(
-    <ExportWord />,
+    <PrintPage />,
     document.getElementById("root")
 )
