@@ -41,3 +41,31 @@
       媒体查询@media print中设置的是打印时的样式。因为打印设备知道其输出区域的
       物理大小，所以使用cm、mm、in(英寸)等作为打印设计的单位完全可行
     示例：ReactHookTest/PrintPage.js，ReactHookTest/PrintPage.css
+
+  补充（其他原生的打印方法）
+    一、直接替换body的内容为要打印的内容，之后再重新刷新页面。
+      const old = window.document.body.innerHTML //备份原来的页面
+      window.document.body.innerHTML = ''
+      window.document.body.appendChild(/* 将你要打印的内容附加到这 */)
+      window.print() //调用print()函数时，会跳出打印预览的界面，以下的代码被阻塞，关闭预览界面后继续执行
+      window.document.body.innerHTML = old
+      window.location.reload() //重新加载旧页面
+
+    二、打开一个新窗口，将打印内容放到新窗口打印，打印结束后关闭新窗口
+      const newWindow = window.open("打印窗口", "_blank")
+      const docStr = '<div>test</div>'  //需要打印的内容
+      newWindow.document.write(docStr)
+      const styles = document.createElement("style")
+      styles.setAttribute('type', 'text/css') //media="print"
+      styles.innerHTML = ''
+      newWindow.document.getElementsByTagName('head')[0].appendChild(styles)
+      newWindow.print()
+      newWindow.close()
+    以上两种方法可能会造成CSS样式应用无效的问题。
+    注意点
+      第二小节的步骤2中的意思是：将页面中所有不需要打印的元素隐藏，特别注意像模态窗Model这些元素，也要为它们加上'print-hide'className属性。
+      如果需要在特定位置强制分页打印，可以尝试在对应元素上设置page-break-before：always !important、page-break-after：always !importantCSS属性，该属性只对块级元素有效（这个非常重要，就被这个坑了）。
+      进入打印预览后，我们无法获知用户最终是选择了打印，还是选择了取消。这里若有人知道解决方法的话，欢迎留言。
+      web打印选项
+      JS能实现谷歌和IE浏览器打印预览，火狐不行，火狐浏览器对于JS的操作权限有极为严格的限制，其基本原则是JS无法操作页面外事务,可以试试用JS调用HTML5机制模拟打印界面输出到打印机，不通过浏览器来完成。
+      在使用口袋打印机（喵喵机）打印，如果打印内容有二维码的时候，要注意二维码的分辨率问题。（我就踩了一个坑：二维码组件生成二维码，默认是以canvas的形式，这样打印出来导致整个内容模糊，改成svg就可以清晰打印了）
